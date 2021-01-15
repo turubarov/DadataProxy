@@ -1,10 +1,17 @@
 package com.turubarov.dadataproxy.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "address")
 public class Address {
+
+    public Address() {
+        this.requests = new ArrayList<>();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -29,6 +36,21 @@ public class Address {
 
     @Column(name = "house")
     private String house;
+
+    @ManyToMany(mappedBy = "addresses")
+    private List<Request> requests;
+
+    public void addRequest(Request request) {
+        requests.add(request);
+    }
+
+    public void setRequests(List<Request> value) {
+        this.requests = value;
+    }
+
+    public List<Request> getRequests() {
+        return requests;
+    }
 
     public String getValue() {
         return value;
