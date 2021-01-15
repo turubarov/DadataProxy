@@ -1,24 +1,22 @@
 package com.turubarov.dadataproxy.controllers;
 
-import com.turubarov.dadataproxy.entities.DataValue;
-import com.turubarov.dadataproxy.repositories.DataValueRepository;
+import com.turubarov.dadataproxy.servises.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("dadata")
 public class DadataController {
 
     @Autowired
-    private DataValueRepository dataValueRepository;
+    private AddressService addressService;
 
-    @GetMapping
-    public Iterable<DataValue> test() {
-        Iterable<DataValue> list = dataValueRepository.findAll();
-        return list;
+    @GetMapping(value = "suggest")
+    public String suggest(@RequestParam("query") String query) {
+        addressService.addAddressesForQuery(query);
+        return "OK";
     }
 }
