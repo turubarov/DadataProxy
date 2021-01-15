@@ -1,5 +1,7 @@
 package com.turubarov.dadataproxy.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,12 +13,13 @@ public class Request {
 
     public Request() {
         this.addresses = new ArrayList<>();
+        this.countUse = 1;
     }
 
     public Request(String query, Date timeOfQuery) {
         this.query = query;
         this.timeOfQuery = timeOfQuery;
-        this.countUse = 0;
+        this.countUse = 1;
         this.addresses = new ArrayList<>();
     }
 
@@ -35,6 +38,7 @@ public class Request {
     private int countUse;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable (name="address_and_request",
             joinColumns = @JoinColumn(name = "id_request"),
             inverseJoinColumns = @JoinColumn(name = "id_address"))

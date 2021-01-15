@@ -1,5 +1,7 @@
 package com.turubarov.dadataproxy.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,7 @@ public class Address {
     @Column(name = "house")
     private String house;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "addresses")
     private List<Request> requests;
 
