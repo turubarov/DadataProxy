@@ -37,11 +37,12 @@ public class Request {
     @Column(name = "count_use")
     private int countUse;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JsonIgnore
-    @JoinTable (name="address_and_request",
+    @JoinTable(name = "address_and_request",
             joinColumns = @JoinColumn(name = "id_request"),
             inverseJoinColumns = @JoinColumn(name = "id_address"))
+
     List<Address> addresses;
 
     public void AddAddress(Address address) {

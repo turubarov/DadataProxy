@@ -16,6 +16,7 @@ public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private int id;
 
     @Column(name = "value")
@@ -40,7 +41,7 @@ public class Address {
     private String house;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "addresses")
+    @ManyToMany(mappedBy = "addresses", fetch = FetchType.EAGER)
     private List<Request> requests;
 
     public void addRequest(Request request) {

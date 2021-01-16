@@ -14,6 +14,7 @@ public interface RequestRepository extends CrudRepository<Request, Integer> {
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM Request r WHERE r.timeOfQuery < :threshold AND r.countUse < 3")
-    public void deleteOldRequests(@Param("threshold") Date threshold);
+    @Query("DELETE FROM Request r WHERE r.timeOfQuery < :timeThreshold AND r.countUse < :countUseThreshold")
+    public void deleteOldRequests(@Param("timeThreshold") Date timeThreshold,
+                                  @Param("countUseThreshold") int countUseThreshold);
 }

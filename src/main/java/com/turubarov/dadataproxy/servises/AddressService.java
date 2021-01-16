@@ -23,9 +23,8 @@ public class AddressService {
     @Autowired
     private RequestRepository requestRepository;
 
-    public List<Address> findAll() {
-        return addressRepository.findAll();
-    }
+    private final int TIME_THRESHOLD_FOR_DELETE = 1;
+    private final int COUNT_USE_THRESHOLD_FOR_DELETE = 3;
 
     public List<Address> processSearch(String type, String query) {
         switch (type) {
@@ -72,26 +71,9 @@ public class AddressService {
 
     private void deleteOldRequests() {
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.HOUR, -2);
-        Date threshold = cal.getTime();
-        requestRepository.deleteOldRequests(threshold);
-    }
-
-    public void AddAddressesForQuery(String query) {
-        addAddresses(DadataJsonConverter.convert(DadataClient.suggestAdress(query)));
-    }
-
-    private void addAddresses(List<Address> listAdr) {
-        listAdr.stream().forEach(adr -> addAddress(adr));
-    }
-
-    private boolean addAddress(Address adr) {
-        Address adrFromDb = addressRepository.findByValue(adr.getValue());
-
-        if (adrFromDb != null) {
-            return false;
-        }
-        addressRepository.save(adr);
-        return true;
+        cal.add(Calendar.MONTH, -TIME_THRESHOLD_FOR_DELETE);
+        Date timeThreshold = cal.getTime();
+        requestRepository.deleteOldRequests(timeThreshold,
+                COUNT_USE_THRESHOLD_FOR_DELETE);
     }
 }
