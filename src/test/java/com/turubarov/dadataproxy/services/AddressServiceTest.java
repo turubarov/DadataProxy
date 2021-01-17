@@ -1,5 +1,6 @@
 package com.turubarov.dadataproxy.services;
 
+import com.turubarov.dadataproxy.dadataclient.SearchTypes;
 import com.turubarov.dadataproxy.domain.Address;
 import com.turubarov.dadataproxy.repositories.AddressRepository;
 import com.turubarov.dadataproxy.servises.AddressService;
@@ -29,9 +30,9 @@ public class AddressServiceTest {
     }
 
     @Test
-    public void processSearchTest() {
+    public void processSearchTest() throws Exception {
         String query = "новосибирск";
         addressService.processRequest(query);
-        assertNotNull(addressService.processSearch("city", "новосибирск"));
+        assertNotNull(addressService.processSearch(SearchTypes.CITY, "новосибирск"));
     }
 }

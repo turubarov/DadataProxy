@@ -1,5 +1,6 @@
 package com.turubarov.dadataproxy.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.turubarov.dadataproxy.domain.Address;
 import com.turubarov.dadataproxy.servises.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,20 +15,33 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("dadata")
+
 public class DadataController {
 
     @Autowired
     private AddressService addressService;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @GetMapping(value = "suggest")
-    public List<Address> suggest(@RequestParam("query") String query) {
-        List<Address> addresses = addressService.processRequest(query);
-        return addresses;
+    public String suggest(@RequestParam("query") String query) {
+        try {
+            return objectMapper.writeValueAsString(
+                    addressService.processRequest(query));
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 
     @GetMapping(value = "search")
-    public List<Address> search(@RequestParam("type") String type,
+    public String search(@RequestParam("type") String type,
                           @RequestParam("query") String query) {
-        return addressService.processSearch(type, query);
+        try {
+            return objectMapper.writeValueAsString(
+                    addressService.processSearch(type, query));
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 }

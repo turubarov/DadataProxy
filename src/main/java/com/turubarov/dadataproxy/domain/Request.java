@@ -19,7 +19,7 @@ public class Request {
     public Request(String query, Date timeOfQuery) {
         this.query = query;
         this.timeOfQuery = timeOfQuery;
-        this.countUse = 1;
+        this.countUse = 0;
         this.addresses = new ArrayList<>();
     }
 
@@ -42,7 +42,6 @@ public class Request {
     @JoinTable(name = "address_and_request",
             joinColumns = @JoinColumn(name = "id_request"),
             inverseJoinColumns = @JoinColumn(name = "id_address"))
-
     List<Address> addresses;
 
     public void AddAddress(Address address) {
@@ -75,6 +74,10 @@ public class Request {
 
     public List<Address> getAddresses() {
         return addresses;
+    }
+
+    public boolean isNew() {
+        return countUse == 1;
     }
 
     public void setAddresses(List<Address> addresses) {
