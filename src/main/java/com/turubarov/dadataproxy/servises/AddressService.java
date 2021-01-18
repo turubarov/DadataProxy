@@ -29,13 +29,13 @@ public class AddressService {
     private final int HOURS_AFTER_LAST_REQUEST = 3;
 
     public List<Address> processSearch(String type, String query) throws Exception {
-        if (type == SearchTypes.CITY) {
+        if (SearchTypes.CITY.equals(type)) {
             return addressRepository.findByCity(query);
-        } else if (type == SearchTypes.REGION) {
+        } else if (SearchTypes.REGION.equals(type)) {
             return addressRepository.findByRegion(query);
-        } else if (type == SearchTypes.SETTLEMENT) {
+        } else if (SearchTypes.SETTLEMENT.equals(type)) {
             return addressRepository.findBySettlement(query);
-        } else if (type == SearchTypes.STREET) {
+        } else if (SearchTypes.STREET.equals(type)) {
             return addressRepository.findByStreet(query);
         }
         throw new Exception("Неправильный параметр для поиска");
