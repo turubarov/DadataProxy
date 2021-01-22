@@ -6,3 +6,4 @@ public class SearchTypes {
     public static final String SETTLEMENT = "settlement";
     public static final String STREET = "street";
 }
+

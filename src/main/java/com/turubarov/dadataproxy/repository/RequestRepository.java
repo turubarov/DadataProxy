@@ -1,4 +1,4 @@
-package com.turubarov.dadataproxy.repositories;
+package com.turubarov.dadataproxy.repository;
 
 import com.turubarov.dadataproxy.domain.Request;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 
 public interface RequestRepository extends CrudRepository<Request, Integer> {
+
     public Request findByQuery(String query);
 
     @Modifying

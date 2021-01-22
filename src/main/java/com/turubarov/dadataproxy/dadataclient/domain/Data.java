@@ -1,15 +1,19 @@
 package com.turubarov.dadataproxy.dadataclient.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Data {
-    private String postal_code;
+
+    @JsonProperty("postal_code")
+    private String postalCode;
     private String region;
     private String city;
     private String settlement;
     private String street;
     private String house;
 
-    public String getPostal_code() {
-        return postal_code;
+    public String getPostalCode() {
+        return postalCode;
     }
 
     public String getRegion() {

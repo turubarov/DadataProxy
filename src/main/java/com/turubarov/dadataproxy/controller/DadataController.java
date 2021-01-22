@@ -1,21 +1,18 @@
-package com.turubarov.dadataproxy.controllers;
+package com.turubarov.dadataproxy.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.turubarov.dadataproxy.domain.Address;
-import com.turubarov.dadataproxy.servises.AddressService;
+import com.turubarov.dadataproxy.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("dadata")
-
 public class DadataController {
 
     @Autowired
@@ -25,23 +22,23 @@ public class DadataController {
     private ObjectMapper objectMapper;
 
     @GetMapping(value = "suggest")
-    public String suggest(@RequestParam("query") String query) {
+    public List<Address> suggest(@RequestParam("query") String query) throws Exception {
         try {
-            return objectMapper.writeValueAsString(
-                    addressService.processRequest(query));
+            return
+                    addressService.processRequest(query);
         } catch (Exception e) {
-            return e.getMessage();
+            throw e;
         }
     }
 
     @GetMapping(value = "search")
-    public String search(@RequestParam("type") String type,
-                          @RequestParam("query") String query) {
+    public List<Address> search(@RequestParam("type") String type,
+                         @RequestParam("query") String query) throws Exception {
         try {
-            return objectMapper.writeValueAsString(
-                    addressService.processSearch(type, query));
+            return
+                    addressService.processSearch(type, query);
         } catch (Exception e) {
-            return e.getMessage();
+            throw e;
         }
     }
 }

@@ -1,16 +1,16 @@
-package com.turubarov.dadataproxy.servises;
+package com.turubarov.dadataproxy.service;
 
-import com.turubarov.dadataproxy.converters.DadataJsonConverter;
+import com.turubarov.dadataproxy.converter.DadataJsonConverter;
 import com.turubarov.dadataproxy.dadataclient.DadataClient;
 import com.turubarov.dadataproxy.dadataclient.SearchTypes;
 import com.turubarov.dadataproxy.domain.Address;
 import com.turubarov.dadataproxy.domain.Request;
-import com.turubarov.dadataproxy.repositories.AddressRepository;
-import com.turubarov.dadataproxy.repositories.RequestRepository;
+import com.turubarov.dadataproxy.repository.AddressRepository;
+import com.turubarov.dadataproxy.repository.RequestRepository;
+import com.turubarov.dadataproxy.repository.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -24,9 +24,8 @@ public class AddressService {
     @Autowired
     private RequestRepository requestRepository;
 
-    private final int TIME_THRESHOLD_FOR_DELETE = 1;
-    private final int COUNT_USE_THRESHOLD_FOR_DELETE = 3;
     private final int HOURS_AFTER_LAST_REQUEST = 3;
+    private final int MIN_LENGTH_FOR_QUERY = 2;
 
     public List<Address> processSearch(String type, String query) throws Exception {
         if (SearchTypes.CITY.equals(type)) {
@@ -70,23 +69,16 @@ public class AddressService {
         return requestRepository.save(request);
     }
 
-
-    public List<Address> processRequest(String query) {
+    public List<Address> processRequest(String query)throws Exception {
+        if (query.length() < MIN_LENGTH_FOR_QUERY) {
+            throw new Exception("Длина запроса должна быть не меньше "+Integer.toString(MIN_LENGTH_FOR_QUERY));
+        }
         Request reqDb = saveRequest(query);
         if (reqDb.isNew() || (!reqDb.isNew() && hoursAfterLastQuery(reqDb) > HOURS_AFTER_LAST_REQUEST)) {
             reqDb = refreshRequest(reqDb);
         }
         List<Address> addrs = reqDb.getAddresses();
-        deleteOldRequests();
+
         return addrs;
-
-    }
-
-    private void deleteOldRequests() {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MONTH, -TIME_THRESHOLD_FOR_DELETE);
-        Date timeThreshold = cal.getTime();
-        requestRepository.deleteOldRequests(timeThreshold,
-                COUNT_USE_THRESHOLD_FOR_DELETE);
     }
 }
