@@ -1,9 +1,8 @@
-package com.turubarov.dadataproxy.services;
+package com.turubarov.dadataproxy.service;
 
 import com.turubarov.dadataproxy.dadataclient.SearchTypes;
 import com.turubarov.dadataproxy.domain.Address;
-import com.turubarov.dadataproxy.repositories.AddressRepository;
-import com.turubarov.dadataproxy.servises.AddressService;
+import com.turubarov.dadataproxy.repository.AddressRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,7 +21,7 @@ public class AddressServiceTest {
     AddressRepository addressRepository;
 
     @Test
-    public void processRequestTest() {
+    public void processRequestTest() throws Exception {
         String query = "новосибирск";
         List<Address> addresses = addressService.processRequest(query);
         assertTrue(addresses.size() > 0);
