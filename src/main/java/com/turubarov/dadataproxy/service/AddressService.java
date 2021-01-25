@@ -7,7 +7,6 @@ import com.turubarov.dadataproxy.domain.Address;
 import com.turubarov.dadataproxy.domain.Request;
 import com.turubarov.dadataproxy.repository.AddressRepository;
 import com.turubarov.dadataproxy.repository.RequestRepository;
-import com.turubarov.dadataproxy.repository.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
